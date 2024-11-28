@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
+import { CartContext } from "@/contexts/CartContext";
+import { CartItem } from "@/types/CartItem";
 
 export default function DetailsScreen() {
   const params = useLocalSearchParams();
   const router = useRouter();
+
+  const { addToCart } = useContext(CartContext)!;
 
   // Mapping hình ảnh
   const imageMap = {
@@ -20,14 +24,23 @@ export default function DetailsScreen() {
   const [shot, setShot] = useState("Single");
   const [ice, setIce] = useState("None");
 
-  const handleIncrement = () => {
-    setQuantity(quantity + 1);
-  };
+  const handleIncrement = () => setQuantity(quantity + 1);
 
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+  const handleDecrement = () => quantity > 1 && setQuantity(quantity - 1);
+
+  const handleAddToCart = () => {
+    const cartItem: CartItem = {
+      name: params.name as string,
+      quantity,
+      size,
+      shot,
+      ice,
+      totalAmount: Number(params.price) * quantity,
+    };
+    addToCart(cartItem);
+    router.push({
+      pathname: "/Cart",
+    }); // Chuyển hướng đến trang giỏ hàng sau khi thêm
   };
 
   const handleSizeChange = (newSize: string) => {
@@ -194,9 +207,7 @@ export default function DetailsScreen() {
       <View className="px-6 mt-2">
         <TouchableOpacity
           className="bg-gray-800 py-3 rounded-lg"
-          onPress={() => {
-            // Add to cart logic goes here
-          }}
+          onPress={handleAddToCart}
         >
           <Text className="text-white font-bold text-center">Add to cart</Text>
         </TouchableOpacity>

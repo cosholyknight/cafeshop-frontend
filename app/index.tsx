@@ -15,7 +15,13 @@ const HomeScreen = () => {
           <Text className="text-3xl font-bold text-gray-800">Anderson</Text>
         </View>
         <View className="flex-row gap-x-4">
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: "./Cart",
+              })
+            }
+          >
             <Image
               resizeMode="contain"
               source={require("../assets/icons/cart.png")}

@@ -1,5 +1,10 @@
 import { Slot } from "expo-router";
+import { CartProvider } from "../contexts/CartContext";
 
 export default function RootLayout() {
-  return <Slot />;
+  return (
+    <CartProvider>
+      <Slot />
+    </CartProvider>
+  );
 }
