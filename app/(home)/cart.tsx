@@ -7,7 +7,7 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import { CartContext } from "../contexts/CartContext";
+import { CartContext } from "../../contexts/CartContext";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
@@ -29,7 +29,7 @@ export default function CartScreen() {
         </TouchableOpacity>
         <Text className="text-xl font-bold text-black">Your Cart</Text>
         <Image
-          source={require("../assets/icons/cart.png")}
+          source={require("../../assets/icons/cart.png")}
           className="w-8 h-8"
         ></Image>
       </View>
@@ -72,8 +72,8 @@ export default function CartScreen() {
           </View>
 
           <TouchableOpacity
-            className="bg-gray-800 py-3 rounded-lg"
-            //onPress={() => router.push("/checkout")}
+            className="bg-teal-800 py-3 rounded-lg"
+            onPress={() => router.push("./ordersuccess")}
           >
             <Text className="text-white font-bold text-center text-lg">
               Checkout

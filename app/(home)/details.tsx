@@ -13,10 +13,10 @@ export default function DetailsScreen() {
 
   // Mapping hình ảnh
   const imageMap = {
-    Americano: require("../assets/americano.png"),
-    Cappuccino: require("../assets/cappuccino.png"),
-    Mocha: require("../assets/mocha.png"),
-    "Flat White": require("../assets/flatwhite.png"),
+    Americano: require("../../assets/americano.png"),
+    Cappuccino: require("../../assets/cappuccino.png"),
+    Mocha: require("../../assets/mocha.png"),
+    "Flat White": require("../../assets/flatwhite.png"),
   };
 
   const [quantity, setQuantity] = useState(1);
@@ -39,8 +39,8 @@ export default function DetailsScreen() {
     };
     addToCart(cartItem);
     router.push({
-      pathname: "/Cart",
-    }); // Chuyển hướng đến trang giỏ hàng sau khi thêm
+      pathname: "./cart",
+    });
   };
 
   const handleSizeChange = (newSize: string) => {
@@ -58,14 +58,14 @@ export default function DetailsScreen() {
   const totalAmount = Number(params.price) * quantity;
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <View className="flex-row justify-between items-center px-6 py-4">
         <TouchableOpacity onPress={() => router.back()}>
           <AntDesign name="back" size={30} color="black" />
         </TouchableOpacity>
         <Text className="text-xl font-bold text-black">Details</Text>
         <Image
-          source={require("../assets/icons/cart.png")}
+          source={require("../../assets/icons/cart.png")}
           className="w-8 h-8"
         ></Image>
       </View>
@@ -101,7 +101,6 @@ export default function DetailsScreen() {
           </View>
         </View>
 
-        {/* Kích cỡ */}
         <View className="flex-row items-center justify-between mb-4">
           <Text className="text-gray-800">Size</Text>
           <View className="flex-row gap-x-2">
@@ -194,7 +193,7 @@ export default function DetailsScreen() {
           </View>
         </View>
 
-        <View className="bg-gray-200 px-4 py-3 rounded-lg mt-36">
+        <View className="bg-gray-200 px-4 py-3 rounded-lg mt-20">
           <View className="flex-row justify-between items-center">
             <Text className="text-gray-800 font-bold">Total Amount</Text>
             <Text className="text-gray-800 font-bold">
@@ -206,12 +205,12 @@ export default function DetailsScreen() {
 
       <View className="px-6 mt-2">
         <TouchableOpacity
-          className="bg-gray-800 py-3 rounded-lg"
+          className="bg-teal-800 py-3 rounded-lg"
           onPress={handleAddToCart}
         >
           <Text className="text-white font-bold text-center">Add to cart</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 }

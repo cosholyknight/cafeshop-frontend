@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode } from "react";
-import { CartContextType, CartItem } from "../types/CartItem"; // Import chính xác
+import { CartContextType, CartItem } from "../types/CartItem";
 
 export const CartContext = createContext<CartContextType | undefined>(
   undefined
