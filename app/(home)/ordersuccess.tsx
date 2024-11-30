@@ -1,5 +1,6 @@
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import React from "react";
+import { router } from "expo-router";
 
 const OrderSuccess = () => {
   return (
@@ -21,7 +22,9 @@ const OrderSuccess = () => {
         <Text className="font-light">For more details, go to my orders</Text>
       </View>
       <View className="bg-teal-800 rounded-full mt-20 w-80 items-center justify-center">
-        <Text className="text-lg text-gray-200 p-3">Track My Order</Text>
+        <TouchableOpacity onPress={() => router.push("../(myOrder)")}>
+          <Text className="text-lg text-gray-200 p-3">Track My Order</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

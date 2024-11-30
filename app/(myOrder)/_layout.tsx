@@ -1,16 +1,15 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { Stack } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 
 const MyOrderLayout = () => {
   return (
-    <Stack
+    <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarPosition: "top",
       }}
-    >
-      <Stack.Screen name="index" />
-    </Stack>
+    ></Tabs>
   );
 };
 

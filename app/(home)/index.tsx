@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import "../../global.css";
 import { useRouter } from "expo-router";
-import NavigationBar from "../../components/NavigationBar";
 
 const HomeScreen = () => {
   const router = useRouter();
-
   return (
     <ScrollView className="flex-1 bg-white">
       {/* Header */}
@@ -34,7 +32,7 @@ const HomeScreen = () => {
           <TouchableOpacity
             onPress={() =>
               router.push({
-                pathname: "./profile",
+                pathname: "./profil",
               })
             }
           >
@@ -48,14 +46,14 @@ const HomeScreen = () => {
       </View>
 
       {/* Loyalty Card */}
-      <View className="bg-teal-800 rounded-3xl p-4 mx-6 mb-6">
+      <View className="bg-teal-800 rounded-3xl p-4 mx-6 mt-6 h-36">
         <View className="flex-row justify-between items-center">
           <Text className="text-base font-semibold text-gray-200 mb-2 pr-5">
             Loyalty card
           </Text>
           <Text className="text-base font-semibold text-gray-200 ">4/8</Text>
         </View>
-        <View className="flex-row justify-between mt-2 bg-white p-5 rounded-3xl">
+        <View className="flex-row justify-between mt-2 bg-white p-5 rounded-2xl">
           {[...Array(8)].map((_, index) => (
             <Image
               resizeMode="contain"
@@ -72,7 +70,7 @@ const HomeScreen = () => {
       </View>
 
       {/* Choose Your Coffee */}
-      <View className="mt-20 bg-teal-800 pt-5 pb-20 rounded-t-3xl">
+      <View className="mt-20 bg-teal-800 pt-5 pb-36 rounded-t-3xl flex-1">
         <Text className="text-lg font-bold text-gray-200 px-6 mb-5">
           Choose your coffee
         </Text>

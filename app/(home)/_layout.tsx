@@ -4,14 +4,13 @@ import { CartProvider } from "@/contexts/CartContext";
 export default function HomeLayout() {
   return (
     <CartProvider>
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack screenOptions={{ headerShown: false }} initialRouteName="index">
         <Stack.Screen name="index" options={{ title: "Home" }} />
         <Stack.Screen name="cart" options={{ title: "Your Cart" }} />
         <Stack.Screen
           name="details"
           options={{
             title: "Details",
-            navigationBarHidden: false,
           }}
         />
         <Stack.Screen name="ordersuccess" options={{ title: "Success" }} />

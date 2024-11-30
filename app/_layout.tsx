@@ -1,40 +1,42 @@
-import { Slot, Stack, Tabs } from "expo-router";
-import { Colors, Header } from "react-native/Libraries/NewAppScreen";
-import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import TabBar from "@/components/TabBar";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 export default function RootLayout() {
+  const getTabBarVisibility = (route) => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+
+    console.log(routeName);
+    if (routeName && routeName == "index") return true;
+    else return false;
+  };
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors.primary,
       }}
+      tabBar={(props) => <TabBar {...props} />}
     >
       <Tabs.Screen
         name="(home)"
-        options={{
+        options={({ route }) => ({
           tabBarLabel: "Home",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="home-outline" size={24} color={color} />
-          ),
-        }}
+          tabBarVisible: getTabBarVisibility(route),
+        })}
       />
+
       <Tabs.Screen
         name="(rewards)"
-        options={{
+        options={({ route }) => ({
           tabBarLabel: "Rewards",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="gift-outline" size={24} color={color} />
-          ),
-        }}
+          tabBarVisible: getTabBarVisibility(route),
+        })}
       />
+
       <Tabs.Screen
         name="(myOrder)"
         options={{
           tabBarLabel: "My Order",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="receipt-outline" size={24} color={color} />
-          ),
         }}
       />
     </Tabs>
