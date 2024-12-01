@@ -14,9 +14,13 @@ import { useRouter } from "expo-router";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useRewardsStore } from "@/store/rewardsStore";
+import { useOrderStore } from "@/store/orderStore";
 
 export default function CartScreen() {
-  const { cart, removeFromCart } = useContext(CartContext)!;
+  const { cart, removeFromCart, checkOutCart } = useContext(CartContext)!;
+  const { items, addToOrder } = useOrderStore();
+  const { addToHistoryRewards } = useRewardsStore();
+
   const router = useRouter();
   const totalPrice = useMemo(() => {
     return cart.reduce((sumPrice, item) => sumPrice + item.totalAmount, 0);
@@ -43,6 +47,9 @@ export default function CartScreen() {
       "Checkout Successful",
       `You earned ${totalQuantity} Loyalty Card and ${earnedPoints} points!`
     );
+    addToOrder(cart);
+    addToHistoryRewards(cart);
+    checkOutCart();
 
     router.push("./ordersuccess");
   };
@@ -57,9 +64,9 @@ export default function CartScreen() {
     <View className="justify-center">
       <TouchableOpacity
         onPress={() => removeFromCart(index)}
-        className="bg-red-200 py-5 mx-5 px-3 rounded-lg"
+        className="bg-red-100 py-10 mx-5 px-3 rounded-2xl"
       >
-        <Ionicons name="trash-outline" color="red" size={30} />
+        <Ionicons name="trash-outline" color="red" size={40} />
       </TouchableOpacity>
     </View>
   );
@@ -71,11 +78,10 @@ export default function CartScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <AntDesign name="back" size={30} color="black" />
         </TouchableOpacity>
-        <Text className="text-xl font-bold text-black">My Cart</Text>
-        <Image
-          source={require("../../assets/icons/cart.png")}
-          className="w-8 h-8"
-        ></Image>
+        <Text className="text-2xl font-bold text-teal-800 mr-2">My Cart</Text>
+        <TouchableOpacity onPress={() => router.push("/(home)")}>
+          <Ionicons name="home-outline" size={26} />
+        </TouchableOpacity>
       </View>
 
       {/* Cart Items */}
@@ -89,8 +95,8 @@ export default function CartScreen() {
             data={cart}
             renderItem={({ item, index }) => (
               <Swipeable renderRightActions={() => renderRightActions(index)}>
-                <View className="bg-gray-200 justify-between flex-row rounded-xl my-2 w-full px-5">
-                  <View className="flex-row">
+                <View className="bg-gray-200 justify-between flex-row rounded-3xl my-2 w-full px-5 py-5">
+                  <View className="flex-row gap-x-3">
                     <Image
                       source={imageMap[item.name as keyof typeof imageMap]}
                       className="w-20 h-20"
@@ -98,13 +104,16 @@ export default function CartScreen() {
                     ></Image>
                     <View className="justify-center">
                       <Text className="text-lg font-bold">{item.name}</Text>
-                      <Text className="text-gray-500">
-                        Quantity: {item.quantity}
+                      <Text className="font-light text-sm py-2">
+                        {item.size} | {item.shot} | {item.ice}
+                      </Text>
+                      <Text className="text-gray-500 pt-1 font-semibold">
+                        x {item.quantity}
                       </Text>
                     </View>
                   </View>
                   <View className="justify-center items-center">
-                    <Text className=" text-gray-600">
+                    <Text className=" text-teal-800 font-semibold text-xl">
                       ${item.totalAmount.toFixed(2)}
                     </Text>
                   </View>

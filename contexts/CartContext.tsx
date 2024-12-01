@@ -16,8 +16,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCart((prevCart) => prevCart.filter((_, i) => i !== index));
   };
 
+  const checkOutCart = () => {
+    setCart((prevCart) => []);
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, checkOutCart }}
+    >
       {children}
     </CartContext.Provider>
   );

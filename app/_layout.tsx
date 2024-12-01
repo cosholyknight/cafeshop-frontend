@@ -5,16 +5,14 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 export default function RootLayout() {
   const getTabBarVisibility = (route) => {
     const routeName = getFocusedRouteNameFromRoute(route);
-
-    console.log(routeName);
-    if (routeName && routeName == "index") return true;
+    if (routeName == "index") return true;
     else return false;
   };
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={({ route }) => ({
         headerShown: false,
-      }}
+      })}
       tabBar={(props) => <TabBar {...props} />}
     >
       <Tabs.Screen
@@ -27,10 +25,9 @@ export default function RootLayout() {
 
       <Tabs.Screen
         name="(rewards)"
-        options={({ route }) => ({
+        options={{
           tabBarLabel: "Rewards",
-          tabBarVisible: getTabBarVisibility(route),
-        })}
+        }}
       />
 
       <Tabs.Screen

@@ -9,6 +9,7 @@ export type CartItem = {
 
 export type CartContextType = {
   cart: CartItem[];
-  addToCart: (item: CartItem) => void; // Đảm bảo kiểu addToCart được định nghĩa
+  addToCart: (item: CartItem) => void;
   removeFromCart: (index: number) => void;
+  checkOutCart: () => void;
 };

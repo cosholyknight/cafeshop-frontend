@@ -7,11 +7,6 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#000000"
-    },
     "ios": {
       "supportsTablet": true
     },
@@ -25,7 +20,6 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "232323",
           "image": "./assets/splash.png",
           "resizeMode": "cover"
         }

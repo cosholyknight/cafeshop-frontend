@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { CartContext } from "@/contexts/CartContext";
 import { CartItem } from "@/types/CartItem";
+import OptionCard from "@/components/OptionCard";
 
 export default function DetailsScreen() {
   const params = useLocalSearchParams();
@@ -11,7 +12,6 @@ export default function DetailsScreen() {
 
   const { addToCart } = useContext(CartContext)!;
 
-  // Mapping hình ảnh
   const imageMap = {
     Americano: require("../../assets/americano.png"),
     Cappuccino: require("../../assets/cappuccino.png"),
@@ -35,7 +35,7 @@ export default function DetailsScreen() {
       size,
       shot,
       ice,
-      totalAmount: Number(params.price) * quantity,
+      totalAmount: totalAmount,
     };
     addToCart(cartItem);
     router.push({
@@ -55,30 +55,36 @@ export default function DetailsScreen() {
     setIce(newIce);
   };
 
-  const totalAmount = Number(params.price) * quantity;
+  const totalAmount = useMemo(() => {
+    let basePrice = Number(params.price);
+    if (size === "Medium") basePrice += 1;
+    if (size === "Large") basePrice += 2;
+    if (shot === "Double") basePrice += 1;
+
+    return basePrice * quantity;
+  }, [size, shot, quantity, params.price]);
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-gray-100">
       <View className="flex-row justify-between items-center px-6 py-4">
         <TouchableOpacity onPress={() => router.back()}>
           <AntDesign name="back" size={30} color="black" />
         </TouchableOpacity>
-        <Text className="text-xl font-bold text-black">Details</Text>
-        <Image
-          source={require("../../assets/icons/cart.png")}
-          className="w-8 h-8"
-        ></Image>
+        <Text className="text-2xl font-bold text-teal-800 mr-3">Details</Text>
+        <TouchableOpacity onPress={() => router.push("/(home)/cart")}>
+          <Feather name="shopping-cart" size={26} />
+        </TouchableOpacity>
       </View>
 
       <View className="mt-5 items-center bg-">
         <View className="w-96 h-64 bg-gray-200 justify-center items-center rounded-3xl">
           <Image
             source={imageMap[params.name as keyof typeof imageMap]}
-            className="w-40 h-40 mb-4"
+            className="w-60 h-60 mb-4"
             resizeMode="contain"
           />
         </View>
-        <Text className="text-2xl font-bold text-gray-800 pt-10">
+        <Text className="text-2xl font-bold text-teal-800 pt-10">
           {params.name}
         </Text>
         <Text className="text-lg text-gray-600 mt-2">
@@ -104,30 +110,14 @@ export default function DetailsScreen() {
         <View className="flex-row items-center justify-between mb-4">
           <Text className="text-gray-800">Size</Text>
           <View className="flex-row gap-x-2">
-            <TouchableOpacity
-              onPress={() => handleSizeChange("Small")}
-              className={`px-4 py-2 rounded-lg ${
-                size === "Small" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>Small</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleSizeChange("Medium")}
-              className={`px-4 py-2 rounded-lg ${
-                size === "Medium" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>Medium</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleSizeChange("Large")}
-              className={`px-4 py-2 rounded-lg ${
-                size === "Large" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>Large</Text>
-            </TouchableOpacity>
+            {["Small", "Medium", "Large"].map((option) => (
+              <OptionCard
+                key={option}
+                object={size}
+                option={option}
+                handleChange={handleSizeChange}
+              />
+            ))}
           </View>
         </View>
 
@@ -135,22 +125,14 @@ export default function DetailsScreen() {
         <View className="flex-row items-center justify-between mb-4">
           <Text className="text-gray-800">Shot</Text>
           <View className="flex-row gap-x-2">
-            <TouchableOpacity
-              onPress={() => handleShotChange("Single")}
-              className={`px-4 py-2 rounded-lg ${
-                shot === "Single" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>Single</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleShotChange("Double")}
-              className={`px-3 py-2 rounded-lg ${
-                shot === "Double" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>Double</Text>
-            </TouchableOpacity>
+            {["Single", "Double"].map((option) => (
+              <OptionCard
+                key={option}
+                object={shot}
+                option={option}
+                handleChange={handleShotChange}
+              />
+            ))}
           </View>
         </View>
 
@@ -158,38 +140,14 @@ export default function DetailsScreen() {
         <View className="flex-row items-center justify-between mb-4">
           <Text className="text-gray-800">Ice</Text>
           <View className="flex-row gap-x-2">
-            <TouchableOpacity
-              onPress={() => handleIceChange("None")}
-              className={`px-4 py-2 rounded-lg ${
-                ice === "None" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>None</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleIceChange("Light")}
-              className={`px-4 py-2 rounded-lg ${
-                ice === "Light" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>Light</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleIceChange("Regular")}
-              className={`px-4 py-2 rounded-lg ${
-                ice === "Regular" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>Regular</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleIceChange("Extra")}
-              className={`px-5 py-2 rounded-lg ${
-                ice === "Extra" ? "bg-gray-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              <Text>Extra</Text>
-            </TouchableOpacity>
+            {["None", "Light", "Regular", "Extra"].map((option) => (
+              <OptionCard
+                key={option}
+                object={ice}
+                option={option}
+                handleChange={handleIceChange}
+              />
+            ))}
           </View>
         </View>
 
