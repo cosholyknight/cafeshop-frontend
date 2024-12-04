@@ -91,7 +91,7 @@ const RewardsScreen = () => {
               </Text>
             </View>
             <Text className="text-blue-900 text-base font-bold">
-              + {reward.quantity * 10} Pts
+              + {reward.totalAmount * 4} Pts
             </Text>
           </View>
         ))}

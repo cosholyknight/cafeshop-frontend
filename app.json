@@ -14,7 +14,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.cosholyknight.cafe"
     },
     "plugins": [
       [
@@ -27,6 +28,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4474a9d1-1b3e-40d5-ae38-32fec11620e5"
+      }
     }
   }
 }

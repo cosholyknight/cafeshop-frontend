@@ -11,7 +11,7 @@ type OrderStore = {
 export const useOrderStore = create<OrderStore>((set) => ({
   items: [],
   history: [],
-  addToOrder: (cart) => set((state) => ({ items: cart })),
+  addToOrder: (cart) => set((state) => ({ items: state.items.concat(cart) })),
   removeFromOrder: (index) =>
     set((state) => ({
       history: [...state.history, state.items[index]],

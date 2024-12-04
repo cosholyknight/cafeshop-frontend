@@ -8,7 +8,7 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { CartContext } from "../../contexts/CartContext";
+import { useCartStore } from "@/store/cartStore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
@@ -17,18 +17,20 @@ import { useRewardsStore } from "@/store/rewardsStore";
 import { useOrderStore } from "@/store/orderStore";
 
 export default function CartScreen() {
-  const { cart, removeFromCart, checkOutCart } = useContext(CartContext)!;
+  const {
+    cart,
+    appliedCoupon,
+    removeFromCart,
+    checkOutCart,
+    totalPrice,
+    totalQuantity,
+    clearCoupon,
+    appliedPrice,
+  } = useCartStore();
   const { items, addToOrder } = useOrderStore();
   const { addToHistoryRewards } = useRewardsStore();
 
   const router = useRouter();
-  const totalPrice = useMemo(() => {
-    return cart.reduce((sumPrice, item) => sumPrice + item.totalAmount, 0);
-  }, [cart]);
-
-  const totalQuantity = useMemo(() => {
-    return cart.reduce((sumQuantity, item) => sumQuantity + item.quantity, 0);
-  }, [cart]);
 
   const { incrementLoyalty, incrementPoints, loyaltyCards } = useRewardsStore();
 
@@ -131,10 +133,42 @@ export default function CartScreen() {
 
       {cart.length > 0 && (
         <View className="bg-white py-4 px-6 shadow-lg">
+          {/* Hiển thị thông tin mã giảm giá */}
+          <TouchableOpacity
+            className="flex-row justify-between items-center mb-4"
+            onPress={() => {
+              if (appliedCoupon) {
+                clearCoupon(); // Xóa mã giảm giá
+                Alert.alert(
+                  "Coupon Removed",
+                  "Your discount has been removed."
+                );
+              } else {
+                router.push("/coupon"); // Điều hướng đến trang chọn coupon
+              }
+            }}
+          >
+            <Text className="text-lg font-semibold text-gray-800">
+              {appliedCoupon
+                ? `Coupon Applied: ${appliedCoupon}`
+                : "Apply a Coupon"}
+            </Text>
+            <Ionicons
+              name={
+                appliedCoupon
+                  ? "close-circle-outline"
+                  : "chevron-forward-outline"
+              }
+              size={22}
+              color="teal"
+            ></Ionicons>
+          </TouchableOpacity>
+
+          {/* Hiển thị tổng tiền */}
           <View className="flex-row justify-between items-center mb-4">
             <Text className="text-lg font-bold text-gray-800">Total Price</Text>
             <Text className="text-lg font-bold text-gray-800">
-              ${totalPrice.toFixed(2)}
+              {appliedCoupon ? appliedPrice.toFixed(2) : totalPrice.toFixed(2)}
             </Text>
           </View>
 

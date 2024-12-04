@@ -2,15 +2,15 @@ import React, { useContext, useMemo, useState } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
-import { CartContext } from "@/contexts/CartContext";
-import { CartItem } from "@/types/CartItem";
+import { useCartStore } from "@/store/cartStore";
 import OptionCard from "@/components/OptionCard";
+import { CartItem } from "@/types/CartItem";
 
 export default function DetailsScreen() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
-  const { addToCart } = useContext(CartContext)!;
+  const { addToCart } = useCartStore();
 
   const imageMap = {
     Americano: require("../../assets/americano.png"),

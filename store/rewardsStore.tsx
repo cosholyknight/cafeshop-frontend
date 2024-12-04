@@ -20,7 +20,8 @@ export const useRewardsStore = create<RewardsState>((set) => ({
     set((state) => ({ loyaltyCards: Math.min(8, state.loyaltyCards + value) })),
   incrementPoints: (value) =>
     set((state) => ({ points: state.points + value })),
-  addToHistoryRewards: (items) => set((state) => ({ historyRewards: items })),
+  addToHistoryRewards: (items) =>
+    set((state) => ({ historyRewards: state.historyRewards.concat(items) })),
   clearLoyalty: () =>
     set((state) => ({
       loyaltyCards: state.loyaltyCards == 8 ? 0 : state.loyaltyCards,
